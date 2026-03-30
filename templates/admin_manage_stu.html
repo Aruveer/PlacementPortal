@@ -1,0 +1,57 @@
+{% extends "admin_dashboard.html" %}
+{% block content %}
+    <div class="card shadow-sm border-0 p-4" style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-primary mb-0">Student Management</h3>
+            <form class="d-flex" method="GET" action="{{ url_for('manage_students') }}">
+                <input class="form-control me-2" type="search" name="search" placeholder="Search Name or ID">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td>{{ s.id }}</td>
+                    <td class="fw-bold">{{ s.name }}</td>
+                    <td>
+                        {% if s.is_blacklisted %}
+                            <span class="badge bg-danger">Blacklisted</span>
+                        {% else %}
+                            <span class="badge bg-success">Active</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="{{ url_for('toggle_blacklist', student_id=s.id) }}" 
+                            class="btn btn-sm {% if s.is_blacklisted %}btn border{% else %}btn border{% endif %}">
+                                {{ 'Unban' if s.is_blacklisted else 'Blacklist' }}
+                            </a>
+                            <a href="{{ url_for('admin_edit_student', s_id=s.id) }}" class="btn border">Edit</a>
+                            <a href="{{ url_for('delete_student', s_id=s.id) }}" class="btn border">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">← Back to Dashboard</a>
+    </div>
+   
+
+{% endblock %}

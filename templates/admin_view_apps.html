@@ -1,0 +1,35 @@
+{% extends "admin_dashboard.html" %}
+{% block content %}
+<div class="card shadow-sm border-0 p-4">
+    <h3 class="mb-4 fw-bold text-primary">Global Student Applications</h3>
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Sr No.</th>
+                <th>Student Name</th>
+                <th>Job Role</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ app.student.name }}</td>
+                <td>{{ app.drive.job }}</td>
+                <td>{{ app.drive.company.name }}</td>
+                <td>{{ app.applied_on.strftime('%d/%m/%Y') }}</td>
+                <td>
+                    <a href="{{ url_for('application_details', app_id=app.id) }}" class="btn btn-sm btn-outline-primary">view</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+body {
+    background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)),
+    url("{{ url_for('static', filename='background_home.jpg') }}")
+    no-repeat center center fixed;
+    background-size: cover;
+}
+</style>
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 py-3">
+        <div class="container">
+            <a class="navbar-brand" href="/"><b>CareerLink</b></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-danger" href="/login">Logout</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="fw-bold">Admin Control Center</h2>
+            <p class="text-muted">Overview of portal activity and pending actions.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5 text-center p-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-success text-white p-5 h-100">
+                <h6>Total Students</h6>
+                <p class="display-6 fw-bold mb-0">{{ students }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-primary text-white p-5 h-100">
+                <h6>Pending Company Approvals</h6>
+                <p class="display-6 fw-bold mb-0">{{ pending }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-success text-white p-5 h-100">
+                <h6>Active Drives</h6>
+                <p class="display-6 fw-bold mb-0">{{ drives }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-primary text-white p-5 h-100">
+                <h6>Total Users</h6>
+                <p class="display-6 fw-bold mb-0">{{ users }}</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="list-group shadow-sm border-0">
+                <div class="list-group-item active bg-dark border-0 py-3">
+                    <h5 class="mb-0">Company Management</h5>
+                </div>
+                <a href="{{ url_for('review_pending_companies') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Review Pending Companies
+                    <span class="badge bg-warning text-dark rounded-pill">{{ pending }}</span>
+                </a>
+                <a href="{{ url_for('manage_approved_companies') }}" class="list-group-item list-group-item-action">Manage Companies</a>
+            </div>
+        </div>
+        
+
+        <div class="col-md-4 mb-4">
+            <div class="list-group shadow-sm border-0">
+                <div class="list-group-item active bg-dark border-0 py-3">
+                    <h5 class="mb-0">Drive Management</h5>
+                </div>
+                <a href="{{ url_for('review_pending_drives') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Review Pending Drives
+                    <span class="badge bg-warning text-dark rounded-pill">{{ pending_drives }}</span>
+                </a>
+                <a href="{{ url_for('manage_live_drives') }}" class="list-group-item list-group-item-action">Manage Drives</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="list-group shadow-sm border-0">
+                <div class="list-group-item active bg-dark border-0 py-3">
+                    <h5 class="mb-0">Student Management</h5>
+                </div>
+                <a href="{{ url_for('manage_students') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Manage Students
+                    <span class="badge bg-warning text-dark rounded-pill">{{ students }}</span>
+                </a>
+                <a href="{{ url_for('view_all_applications') }}" class="list-group-item list-group-item-action">
+                    View All Student Applications
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row mt-5">
+            <div class="col-md-8 offset-md-2">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="text-center mb-4">Overview</h4>
+                        <canvas id="adminChart" width="100" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    let canvas = document.getElementById('adminChart');
+    let statsChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: ['Students', 'Active Drives', 'Pending', 'Applications'],
+            datasets: [{
+                label: 'Total Count',
+                data: [{{ students }}, {{ drives }}, {{ pending_drives }}, {{ total_apps }}],
+                backgroundColor: 'blue'
+            }]
+        },
+        options: {scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

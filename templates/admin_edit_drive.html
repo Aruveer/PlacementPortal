@@ -1,0 +1,44 @@
+{% extends "admin_dashboard.html" %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="home-main" style="max-width: 600px; padding: 40px;">
+        <h2 class="home-title mb-4">Edit Placement Drive</h2>
+        <form method="POST">
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Job Title</label>
+                <input type="text" name="job" class="form-control" value="{{ drive.job }}" required>
+            </div>
+
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Expected Salary (LPA)</label>
+                <input type="text" name="salary" class="form-control" value="{{ drive.salary or '' }}" >
+            </div>
+
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Location</label>
+                <input type="text" name="location" class="form-control" value="{{ drive.location or '' }}">
+            </div>
+
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Application Deadline</label>
+                <input type="datetime-local" name="deadline" class="form-control" 
+                       value="{{ drive.deadline.strftime('%Y-%m-%dT%H:%M') if drive.deadline }}">
+            </div>
+            
+            <div class="mb-4 text-start">
+                <label class="form-label fw-bold">Job Description</label>
+                <textarea name="description" class="form-control" rows="5">{{ drive.description }}</textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">Update Drive</button>
+                <a href="{{ url_for('manage_live_drives') }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+        <div class="mt-4">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

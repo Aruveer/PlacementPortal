@@ -1,0 +1,37 @@
+{% extends "student_dashboard.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-lg border-0 p-5 bg-white rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Student Application History</h2>
+            <a href="{{ url_for('student_dashboard', u_id=u_id) }}" class="btn btn-sm btn-dark">Back to Dashboard</a>
+        </div>
+        
+        <p class="mb-1"><strong>Student Name:</strong> {{ student.name }}</p>
+        <p class="mb-4"><strong>Department:</strong> Computer Science</p>
+
+        <table class="table table-bordered">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Drive No.</th>
+                    <th>Interview</th>
+                    <th>Job Title</th>
+                    <th>Results</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for app in history %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>In-person</td>
+                    <td>{{ app.drive.job }}</td>
+                    <td><span class="badge {% if app.status == 'Shortlisted' %}bg-success{% elif app.status == 'Rejected' %}bg-danger{% else %}bg-secondary{% endif %}">{{ app.status }}</span></td>
+                    <td>None</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

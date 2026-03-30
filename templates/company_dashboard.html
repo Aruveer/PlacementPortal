@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    body {
+        background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0.1)), url("{{ url_for('static', filename='background_home.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+    }
+    #cont5 {
+        background-color: rgba(255,255,255, 0.8);
+        border-radius: 1rem;
+        position: relative;
+        top: 2rem;
+        padding: 2rem;
+        margin-bottom: 5rem;
+    }
+</style>
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 py-3">
+        <div class="container">
+            <a class="navbar-brand" href="/"><b>CareerLink</b></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-danger" href="/login">Logout</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4" id="cont5">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="fw-bold mb-0">Welcome, {{ company.name }}!</h2>
+        <a href="{{ url_for('company_edit_profile', u_id=u_id) }}" class="btn btn-outline-dark">
+            Edit Company Profile
+        </a>
+    </div>
+    <p class="text-muted mb-4">Manage your placement drives and view applicants.</p>
+    
+    <hr class="mb-5">
+
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark">Recruitment Overview</h4>
+                <a href="{{ url_for('create_drive', u_id=u_id) }}" class="btn btn-primary shadow-sm px-4">
+                    <i class="fas fa-plus me-2"></i>+ Create New Drive
+                </a>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-5 p-4 bg-white">
+                <h5 class="fw-bold text-primary mb-3">Upcoming Drives</h5>
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">Sr No.</th>
+                            <th>Drive Name</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in upcoming_drives %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td class="fw-bold">{{ drive.job }}</td>
+                            <td>
+                                <span class="badge {% if drive.status=='Approved' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                                    {{ drive.status }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <a href="{{ url_for('view_applicants', drive_id=drive.id, u_id=u_id) }}" class="btn btn-sm btn-outline-info px-3">View Details</a>
+                                    <a href="{{ url_for('company_complete_drive', drive_id=drive.id, u_id=u_id) }}" class="btn btn-sm btn-success px-3">Mark as complete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">No upcoming drives found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card shadow-sm border-0 p-4 bg-white">
+                <h5 class="fw-bold text-muted mb-3">Closed Drives</h5>
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">Sr No.</th>
+                            <th>Drive Name</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in closed_drives %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ drive.job }}</td>
+                            <td class="text-end">
+                                <a href="{{ url_for('view_applicants', drive_id=drive.id, u_id=u_id) }}" class="btn btn-sm btn-secondary px-4">view history</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">No closed drives yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

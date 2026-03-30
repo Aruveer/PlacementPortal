@@ -1,0 +1,49 @@
+{% extends "admin_dashboard.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 p-4 mb-5" style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);">
+        <h3 class="fw-bold text-primary mb-0">Pending Placement Drives</h3>
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Deadline</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drive in pending_drives %}
+                <tr>
+                    <td class="fw-bold">{{ drive.job }}</td>
+                    <td>
+                        {{ drive.company.name }}
+                        {% if drive.company.is_blacklisted %}
+                            <span class="badge bg-danger ms-2">Blacklisted</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ drive.deadline.strftime('%Y-%m-%d %H:%M') if drive.deadline else 'No Deadline' }}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            {% if not drive.company.is_blacklisted %}
+                                <a href="{{ url_for('toggle_drive_status', drive_id=drive.id) }}" class="btn border">Approve</a>
+                            {% else %}
+                                <button class="btn border">Blocked</button>
+                            {% endif %}
+                            <a href="{{ url_for('admin_edit_drive', drive_id=drive.id) }}" class="btn border">Edit</a>
+                            <a href="{{ url_for('delete_drive', drive_id=drive.id) }}" class="btn border">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No pending drives found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+{% endblock %}

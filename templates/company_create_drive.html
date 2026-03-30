@@ -1,0 +1,43 @@
+{% extends "company_dashboard.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0 p-4">
+            <h3 class="mb-4 text-center fw-bold text-primary">Post New Placement Drive</h3>
+            <form action="{{ url_for('create_drive', u_id=u_id) }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Job Title</label>
+                    <input type="text" name="job" class="form-control"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Salary Package (LPA)</label>
+                    <input type="text" name="salary" class="form-control"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Job Location</label>
+                    <input type="text" name="location" class="form-control"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Job Description</label>
+                    <textarea name="description" class="form-control" rows="5"  required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Application Deadline</label>
+                    <input type="datetime-local" name="deadline" class="form-control" required>
+                    <div class="form-text">Students cannot apply after this date.</div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">Post Drive</button>
+                    <a href="{{ url_for('company_dashboard', u_id=u_id) }}" class="btn btn-light border text-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

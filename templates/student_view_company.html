@@ -1,0 +1,53 @@
+{% extends "student_dashboard.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-lg border-0 p-5 bg-white rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0 text-primary">{{ company.name }}</h2>
+            
+        </div>
+
+        <div class="mb-5">
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <p><strong>HR Contact:</strong> {{ company.hr_contact or 'Not Available' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Website:</strong> 
+                        {% if company.website %}
+                            <a href="{{ company.website }}" target="_blank">{{ company.website }}</a>
+                        {% else %}
+                            Not Available
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="fw-bold border-bottom pb-2">Current Drives</h4>
+            <div class="list-group">
+                {% for drive in drives %}
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 shadow-sm mb-2 rounded bg-light">
+                    <div>
+                        <h6 class="fw-bold mb-0">{{ drive.job }}</h6>
+                        <small class="text-muted">Deadline: {{ drive.deadline.strftime('%d %b, %Y') if drive.deadline else 'No Deadline' }}</small>
+                    </div>
+                    <a href="{{ url_for('student_drive_details', drive_id=drive.id, u_id=u_id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    No active drives found for this company at the moment.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ url_for('student_dashboard', u_id=u_id) }}" class="btn btn-dark px-4">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

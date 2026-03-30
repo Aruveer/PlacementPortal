@@ -1,0 +1,31 @@
+{% extends "admin_dashboard.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="home-main" style="max-width: 600px; padding: 40px;">
+        <h3 class="home-title mb-4">Edit Company Profile</h3>
+        <form method="POST">
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Company Name</label>
+                <input type="text" name="name" class="form-control" value="{{ company.name }}" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">HR Contact (Name/Email)</label>
+                <input type="text" name="hr_contact" class="form-control" value="{{ company.hr_contact or '' }}">
+            </div>
+            <div class="mb-4 text-start">
+                <label class="form-label fw-bold">Website URL</label>
+                <input type="url" name="website" class="form-control" value="{{ company.website or '' }}" placeholder="https://example.com">
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">Save Changes</button>
+                <a href="{{ url_for('manage_approved_companies') }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+        <div class="mt-4">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+     
+</div>
+{% endblock %}

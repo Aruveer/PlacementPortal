@@ -1,0 +1,57 @@
+{% extends "company_dashboard.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3 class="fw-bold">Applicants for: <span class="text-primary">{{ drive.job }}</span></h3>
+    <hr>
+    
+    <div class="card shadow-sm border-0 p-4">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Skills</th>
+                    <th>Resume</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appl in applications %}
+                <tr>
+                    <td>{{ appl.student.name }}</td>
+                    <td><small class="text-muted">{{ appl.student.skills or 'No skills listed' }}</small></td>
+                    <td>
+                        {% if appl.student.resume %}
+                        <a href="{{ url_for('static', filename='resumes/' + appl.student.resume) }}" 
+                           target="_blank" class="btn btn-sm btn-link">📄 Download</a>
+                        {% else %}
+                        <span class="text-muted">No Resume</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge {% if appl.status == 'Selected' %}bg-success{% elif appl.status == 'Rejected' %}bg-danger{% else %}bg-info{% endif %} text-dark">
+                            {{ appl.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ url_for('update_application_status', app_id=appl.id, new_status='Shortlisted', u_id=u_id) }}" class="btn btn-outline-warning">Shortlist</a>
+                            <a href="{{ url_for('update_application_status', app_id=appl.id, new_status='Selected', u_id=u_id) }}" class="btn btn-outline-success">Select</a>
+                            <a href="{{ url_for('update_application_status', app_id=appl.id, new_status='Rejected', u_id=u_id) }}" class="btn btn-outline-danger">Reject</a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No applications yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            
+        <div class="mt-4">
+            <a href="{{ url_for('company_dashboard', u_id=u_id) }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
