@@ -1,7 +1,7 @@
 from flask import render_template,redirect,request,url_for,flash
 from sqlalchemy import or_
 from .model import *
-from __main__ import app 
+from app import app
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
