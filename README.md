@@ -1,5 +1,5 @@
 # Campus Placement Portal 🎓
- 
+  
  A comprehensive web-based placement management system built with Flask. This platform connects students, company recruiters, and the college placement administration into one seamless workflow.
  
  ##  Key Features
