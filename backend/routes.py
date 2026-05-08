@@ -3,7 +3,7 @@ from sqlalchemy import or_
 from .model import *
 from app import app
 from datetime import datetime
-import os
+import os 
 from werkzeug.utils import secure_filename
  
 @app.route("/")
